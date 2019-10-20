@@ -1,7 +1,17 @@
 <html>
 <body>
 <pre>
-$!{value1}
-</pre>>
-</body>>
+    $!{value1}
+    $!{colors}
+    $!{map}
+    #foreach($color in $colors)
+    this $color
+    #end
+    user:$!{user.name}
+    #parse("header.html")
+    #set($heool="heool")
+</pre>
+>
+</body>
+>
 </html>>
