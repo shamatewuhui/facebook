@@ -15,6 +15,7 @@ public interface UserDAO {
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS,
 
             ") values (#{name},#{password},#{salt},#{headUrl})"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int addUser(User user);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})
