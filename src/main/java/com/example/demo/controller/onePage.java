@@ -1,10 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Aspect.LogAspect;
-import com.example.demo.model.user;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import org.slf4j.ILoggerFactory;
+import com.example.demo.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,11 +32,13 @@ public class onePage {
         return "heool world"+httpSession.getAttribute("msg");
     }
 
+   /*
     @RequestMapping(path = {"/vm"}, method = {RequestMethod.GET})
     public String template() {
 
         return "HomePod";
     }
+    */
 
     @RequestMapping(path = {"/v"}, method = {RequestMethod.GET})
     public String model(Model model) {
@@ -52,10 +50,10 @@ public class onePage {
             map.put(String.valueOf(i), String.valueOf(i * i));
         }
         model.addAttribute("map", map);
-        model.addAttribute("user", new user("sss"));
+        model.addAttribute("user", new User("sss"));
         return "home";
     }
-
+/*
     @RequestMapping(path = {"/request"}, method = {RequestMethod.GET})
     @ResponseBody
     public String request(Model model, HttpServletResponse response,
@@ -69,7 +67,8 @@ public class onePage {
         return sb.toString();
 
     }
-
+*/
+/*
     @RequestMapping(path = {"/redirect/{code}"}, method = {RequestMethod.GET})
 
 
@@ -79,5 +78,5 @@ public class onePage {
         httpSession.setAttribute("msg","ssssdddd");
         return "redirect:/";
     }
-
+*/
 }
