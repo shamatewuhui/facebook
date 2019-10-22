@@ -18,7 +18,7 @@ import java.util.Map;
 import org.slf4j.LoggerFactory;
 
 
-@Controller
+//@Controller
 public class onePage {
 
     private static final Logger logger= LoggerFactory.getLogger(onePage.class);
