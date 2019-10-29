@@ -23,8 +23,8 @@ public class HomeController {
     QuestionService questionService;
     @Autowired
     UserService userService;
-    @RequestMapping(path = {"/index_2"}, method = {RequestMethod.GET})
-    public String index_2(Model model) {
+    @RequestMapping(path = {"/index"}, method = {RequestMethod.GET})
+    public String index(Model model) {
         List<Question> questionList=questionService.getLatestQuestions(0,0,10);
         List<ViewObject> vos = new ArrayList<>();
         for (Question question : questionList) {
