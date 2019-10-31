@@ -23,9 +23,10 @@ public class HomeController {
     QuestionService questionService;
     @Autowired
     UserService userService;
-    @RequestMapping(path = {"/index"}, method = {RequestMethod.GET})
-    public String index(Model model) {
-        List<Question> questionList=questionService.getLatestQuestions(0,0,10);
+
+
+    private List<ViewObject> getQuestions(int userId, int offset, int limit) {
+        List<Question> questionList = questionService.getLatestQuestions(userId, offset, limit);
         List<ViewObject> vos = new ArrayList<>();
         for (Question question : questionList) {
             ViewObject vo = new ViewObject();
@@ -33,24 +34,27 @@ public class HomeController {
             vo.set("user", userService.getUser(question.getUserId()));
             vos.add(vo);
         }
-        model.addAttribute("vos",vos);
-        logger.info("说说说说 ");
-        return "index" ;
+        return vos;
     }
-/*
-    @RequestMapping(path = {"/", "/userindex"}, method = {RequestMethod.GET, RequestMethod.POST})
+
+    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model,
                         @RequestParam(value = "pop", defaultValue = "0") int pop) {
         model.addAttribute("vos", getQuestions(0, 0, 10));
         return "index";
     }
-*/
 
-
-/*
     @RequestMapping(path = {"/user/{userId}"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String userIndex(Model model, @PathVariable("userId") int userId) {
         model.addAttribute("vos", getQuestions(userId, 0, 10));
         return "index";
-    }*/
+    }
+
+
+
+
+
+
+
+
 }
