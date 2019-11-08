@@ -1,19 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.HostHolder;
-import com.example.demo.model.Question;
+import com.example.demo.model.*;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.QuestionService;
+import com.example.demo.service.UserService;
 import com.example.demo.util.DemoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -22,11 +23,31 @@ public class QuestionController {
     QuestionService questionService;
     @Autowired
     HostHolder hostHolder;
+    @Autowired
+    UserService userService;
 
+    @Autowired
+    CommentService commentService;
+
+    @RequestMapping (value = "/question/{qid}")
+    public String questionDetail(Model model, @PathVariable("qid") int qid) {
+        Question question = questionService.getById(qid);
+        model.addAttribute("question", question);
+        List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<ViewObject> vos = new ArrayList<>();
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+            vo.set("user", userService.getUser(comment.getUserId()));
+            vos.add(vo);
+        }
+        model.addAttribute("comments", vos);
+
+        return "detail";
+    }
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
-    public String addQuestion(@RequestParam("title") String title, @RequestParam("content") String content)
-    {
+    public String addQuestion(@RequestParam("title") String title, @RequestParam("content") String content) {
         try {
             Question question = new Question();
             question.setContent(content);
@@ -45,4 +66,5 @@ public class QuestionController {
             logger.error("增加题目失败" + e.getMessage()); }
         return  DemoUtil.getJSONString(1,"失败");
     }
+
 }

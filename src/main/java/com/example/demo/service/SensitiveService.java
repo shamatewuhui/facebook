@@ -1,4 +1,5 @@
 package com.example.demo.service;
+
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -183,7 +184,7 @@ public class SensitiveService implements InitializingBean {
     public static void main(String[] argv) {
         SensitiveService s = new SensitiveService();
         s.addWord("色情");
-        s.addWord("好色");
+        s.addWord("赌博");
         System.out.print(s.filter("你好 *色 情"));
     }
 }
