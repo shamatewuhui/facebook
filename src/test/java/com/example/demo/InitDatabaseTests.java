@@ -2,8 +2,10 @@ package com.example.demo;
 
 import com.example.demo.dao.QuestionDAO;
 import com.example.demo.dao.UserDAO;
+import com.example.demo.model.EntityType;
 import com.example.demo.model.Question;
 import com.example.demo.model.User;
+import com.example.demo.service.FollowService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class InitDatabaseTests {
 
     @Autowired
     QuestionDAO questionDAO;
+    @Autowired
+    FollowService followService;
 
     @Test
     public void contextLoads() {
@@ -36,9 +40,14 @@ public class InitDatabaseTests {
             user.setPassword("");
             user.setSalt("");
             userDAO.addUser(user);
+
+
+            for (int j = 1; j < i; ++j) {
+                followService.follow(j, EntityType.ENTITY_USER, i);
+            }
+
             user.setPassword("newpassword333 ");
             userDAO.updatePassword(user);
-
             Question question = new Question();
             question.setCommentCount(i);
             Date date = new Date();
@@ -50,7 +59,7 @@ public class InitDatabaseTests {
             questionDAO.addQuestion(question);
         }
         System.out.print(questionDAO.selectLatestQuestions(1,5,10));//输出字符串
-        System.out.print("DSSSS");
+        System.out.print("测试");
     }
 
 

@@ -1,5 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.async.EventModel;
+import com.example.demo.async.EventProducer;
+import com.example.demo.async.EventType;
+import com.example.demo.model.HostHolder;
 import com.example.demo.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -22,6 +26,10 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    EventProducer eventProducer;
+    @Autowired
+    HostHolder hostHolder;
 
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.POST})
     public String reg(Model model,
@@ -35,6 +43,7 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");
                 response.addCookie(cookie);
+
                 if (StringUtils.isNotBlank(next)) {
                     return "redirect:" + next;
                 }
@@ -64,6 +73,11 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN)
+                        .setExt("username", username).setExt("email", "1922348648@qq.com")
+                        .setActorId((int)map.get("userId")));
+
+
                 if (StringUtils.isNotBlank(next)) {
                     return "redirect:" + next;
                 }
@@ -72,16 +86,12 @@ public class LoginController {
                 model.addAttribute("msg", map.get("msg"));
                 return "login";
             }
-
-
         } catch (Exception e) {
             logger.error("注册异常" + e.getMessage());
             model.addAttribute("msg", "服务器错误");
             return "login";
         }
-
     }
-
     @RequestMapping(path = {"/reglogin"}, method = {RequestMethod.GET})
     public String reglogin(Model model, @RequestParam(value = "next", required = false) String next) {
         model.addAttribute("next", next);
